@@ -1,34 +1,53 @@
 // api.js
 export function api() {
     const container = document.createElement('div');
-    container.id="wheaterContainer"
+    container.id = "weatherContainer";
 
     fetch('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/MAR%20DEL%20PLATA?unitGroup=us&key=UU5S77GZAASBEEW6Y8A4D86M6&contentType=json')
         .then(response => response.json())
         .then(data => {
-            const tempF = data.days[0].temp;
-            const tempC = ((tempF - 32) * 5 / 9).toFixed(1);
-            const windN =  data.days[0].windspeed;
-            const windKM = (windN*1.852).toFixed(1);
-            const max = data.days[0].tempmax;
-            const tempmax = ((max - 32) * 5 / 9).toFixed(1);
-            const min = data.days[0].tempmin;
-            const tempmin = ((min - 32) * 5 / 9).toFixed(1);
-            container.innerHTML = `
-                <h2>Clima</h2>
-                <p>Localidad: ${data.resolvedAddress}</p>
-                <p>Fecha: ${data.days[0].datetime} </p>
-                <p>Desc: ${data.description}</p>
-                <p>Temperatura: ${tempC} °C</p>
-                <p>Probabilidad Lluvia: ${data.days[0].precipprob}</p>
-                <p>Velocidad del viento: ${windKM} km/h</p>
-                <p>Temp Max: ${tempmax} °C</p>
-                <p>Temp Min: ${tempmin} °C</p>
-                <p>Humedad: ${data.days[0].humidity}% </p>
+            const current = data.currentConditions;
 
+            // Función auxiliar para convertir datos de días
+            const parseDay = (dayData, label, isToday = false) => {
+                const temp = ((dayData.temp - 32) * 5 / 9).toFixed(1);
+                const tempMax = ((dayData.tempmax - 32) * 5 / 9).toFixed(1);
+                const tempMin = ((dayData.tempmin - 32) * 5 / 9).toFixed(1);
+                const windKM = (dayData.windspeed * 1.852).toFixed(1);
+                const windDir = dayData.winddir;
+                const humidity = dayData.humidity;
+
+                const actualTemp = isToday ? ((current.temp - 32) * 5 / 9).toFixed(1) : temp;
+
+                return `
+                    <div class="day-block">
+                        <h3>${label}</h3>
+                        <p><span class="label">Fecha:</span> ${dayData.datetime}</p>
+                        <p><span class="label">Descripción:</span> ${dayData.description || "Sin datos"}</p>
+                        <p><span class="label">Temp Actual:</span> ${actualTemp} °C</p>
+                        <p><span class="label">Temp Máxima:</span> ${tempMax} °C</p>
+                        <p><span class="label">Temp Mínima:</span> ${tempMin} °C</p>
+                        <p><span class="label">Viento:</span> ${windKM} km/h</p>
+                        <p><span class="label">Dirección Viento:</span> ${windDir}°</p>
+                        <p><span class="label">Humedad:</span> ${humidity}%</p>
+                    </div>
+                `;
+            };
+            const hoy = parseDay(data.days[0], "Hoy", true);
+            const ayer = parseDay(data.days[1], "Ayer");
+            const mañana = parseDay(data.days[2], "Mañana");
+
+            container.innerHTML = `
+                <h2>Clima en ${data.resolvedAddress}</h2>
+                <div class="weather-grid">
+                    ${ayer}
+                    ${hoy}
+                    ${mañana}
+                </div>
             `;
         })
         .catch(err => {
+            console.error(err);
             container.textContent = 'Error al cargar el clima.';
         });
 
