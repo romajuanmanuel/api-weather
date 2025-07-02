@@ -3,7 +3,7 @@ export function loadPage() {
     const app = document.getElementById('app');
 
     const header = document.createElement('header');
-    header.innerHTML = `<h1>Wheater App</h1>`;
+    header.innerHTML = `<h1>Weather App</h1>`;
 
     const main = document.createElement('main');
 
