@@ -30,7 +30,6 @@ body {
   color: #333;
 }
 
-/* Header y Footer fijos arriba y abajo */
 header,
 footer {
   background-color: #333;
@@ -40,7 +39,6 @@ footer {
   flex-shrink: 0;
 }
 
-/* Main ocupa todo el espacio vertical restante */
 main {
   flex: 1;
   width: 100%;
@@ -75,7 +73,6 @@ main {
 
 #weatherContainer h2 {
   margin: 0 auto 1.5rem auto;
-  /* ya incluye margin-bottom */
   color: var(--primary);
   font-size: 2rem;
   text-align: center;
@@ -86,9 +83,7 @@ main {
 .weather-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  /* Mínimo 250px, máximo 1fr */
   gap: 10px;
-  /* Espacio entre los elementos */
 }
 
 .label {

@@ -35,9 +35,7 @@ export function api() {
 
       const diasHTML = data.days
         .map((day, i) => {
-          // Crear objeto Date usando la fecha de la API
           const dateObj = new Date(`${day.datetime}T00:00:00`);
-          // Obtener nombre del día en español y capitalizar
           let nombre = dateObj.toLocaleDateString('es-AR', { weekday: 'long' });
           nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
 
