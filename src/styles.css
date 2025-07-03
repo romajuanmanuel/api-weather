@@ -83,10 +83,9 @@
 }
 
   .weather-grid {
-    display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
+   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Mínimo 250px, máximo 1fr */
+  gap: 10px; /* Espacio entre los elementos */
   }
 
   .label {
