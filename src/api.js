@@ -10,27 +10,31 @@ export function api() {
       const parseDay = (dayData, label, isToday = false) => {
         const tempMax = ((dayData.tempmax - 32) * 5 / 9).toFixed(1);
         const tempMin = ((dayData.tempmin - 32) * 5 / 9).toFixed(1);
-        const windKM   = (dayData.windspeed * 1.852).toFixed(1);
-        const windDir  = dayData.winddir.toFixed(1);
+        const windKM = (dayData.windspeed * 1.852).toFixed(1);
+        const windDir = dayData.winddir.toFixed(1);
         const humidity = dayData.humidity.toFixed(1);
 
         return `
-          <div class="day-block">
-            <h3>${label}</h3>
-            <p><span class="label">Fecha:</span> ${dayData.datetime}</p>
-            <p><span class="label">Descripción:</span> ${dayData.description || "Sin datos"}</p>
-            ${
-              isToday
-                ? `<p><span class="label">Temp Actual:</span> ${((current.temp - 32) * 5 / 9).toFixed(1)} °C</p>`
-                : ''
-            }
-            <p><span class="label">Temp Máx:</span> ${tempMax} °C</p>
-            <p><span class="label">Temp Mín:</span> ${tempMin} °C</p>
-            <p><span class="label">Viento:</span> ${windKM} km/h</p>
-            <p><span class="label">Dir. Viento:</span> ${windDir}°</p>
-            <p><span class="label">Humedad:</span> ${humidity}%</p>
-          </div>
-        `;
+  <article class="weather-card${isToday ? ' today' : ''}">
+    <header class="card-header">
+      <h3>${label}</h3>
+      <time datetime="${dayData.datetime}">${dayData.datetime}</time>
+    </header>
+    <div class="card-body">
+      <p class="description">${dayData.description || "Sin datos"}</p>
+      <ul class="stats-list">
+        ${isToday
+            ? `<li><strong>Ahora:</strong> ${((current.temp - 32) * 5 / 9).toFixed(1)} °C</li>`
+            : ''
+          }
+        <li><strong>Máx:</strong> ${tempMax} °C</li>
+        <li><strong>Mín:</strong> ${tempMin} °C</li>
+        <li><strong>Viento:</strong> ${windKM} km/h (${windDir}°)</li>
+        <li><strong>Humedad:</strong> ${humidity}%</li>
+      </ul>
+    </div>
+  </article>
+`;
       };
 
       const diasHTML = data.days
