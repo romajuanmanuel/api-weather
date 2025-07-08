@@ -1,3 +1,4 @@
+//index.js
 import './styles.css';
 import { loadPage } from './loadPage';
 

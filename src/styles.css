@@ -1,4 +1,5 @@
-/* Reset y box-sizing */
+/*styles.css*/
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,7 +21,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Variables de tema */
 :root {
   --primary: #3a86ff;
   --bg: #f0f4f8;
@@ -42,7 +42,6 @@ body.dark {
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
-/* Estructura general */
 header, footer {
   background-color: #333;
   color: #fff;
@@ -56,7 +55,8 @@ main {
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
 #app {
@@ -73,7 +73,7 @@ main {
   padding: 1rem 0;
 }
 
-/* Tarjeta individual */
+
 .weather-card {
   background: var(--card-gradient);
   border-radius: var(--card-radius);
@@ -93,7 +93,7 @@ main {
   border: 2px solid var(--primary);
 }
 
-/* Cabecera de tarjeta */
+
 .card-header {
   background: rgba(255, 255, 255, 0.15);
   padding: 1rem;
@@ -114,7 +114,7 @@ main {
   opacity: 0.8;
 }
 
-/* Cuerpo de tarjeta */
+
 .card-body {
   flex: 1;
   padding: 1rem;
@@ -129,7 +129,7 @@ main {
   color: var(--text);
 }
 
-/* Lista de estadísticas */
+
 .stats-list {
   list-style: none;
   padding: 0;
@@ -147,7 +147,7 @@ main {
   color: var(--label);
 }
 
-/* Media queries para responsividad */
+
 @media (max-width: 768px) {
   main {
     padding: 1rem;

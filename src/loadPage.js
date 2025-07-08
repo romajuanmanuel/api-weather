@@ -1,43 +1,77 @@
-import { api } from './api.js';
+// loadPage.js
+import { getWeatherData, renderWeatherGrid } from './api.js';
+
 export function loadPage() {
-    const app = document.getElementById('app');
+  const app = document.getElementById('app');
 
-    const header = document.createElement('header');
-    header.innerHTML = `<h1>Weather App</h1>`;
+  const header = document.createElement('header');
+  header.innerHTML = `<h1>Weather App</h1>`;
 
-    const main = document.createElement('main');
+  const toggleTheme = document.createElement('button');
+  toggleTheme.id = 'toggleTheme';
+  header.append(toggleTheme);
 
-    const footer = document.createElement('footer');
-    footer.innerHTML = `<small>&copy; 2025 Mi Sitio</small>`;
+  const main = document.createElement('main');
+  const footer = document.createElement('footer');
+  footer.innerHTML = `<small>&copy; 2025 Mi Sitio</small>`;
 
-    const toggleTheme = document.createElement('button');
-    toggleTheme.id = 'toggleTheme';
+  const form = document.createElement('form');
+  form.id = 'weatherForm';
 
-    
+  const input = document.createElement('input');
+  input.id = 'locationInput';
+  input.type = 'text';
+  input.placeholder = 'Ingrese su ciudad';
+  input.required = true;
 
-    app.append(header, main, footer);
-    const weatherDiv = api();
-    header.append(toggleTheme);
-    main.append(weatherDiv);
+  const btn = document.createElement('button');
+  btn.type = 'submit';
+  btn.textContent = 'Consultar';
 
-    const toggleBtn = document.getElementById('toggleTheme');
-    const body = document.body;
-    const savedTheme = localStorage.getItem('theme');
-    const grid = document.getElementById('weatherContainer');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark');
-        grid.classList.add('dark');
+  form.append(input, btn);
+  main.append(form);
+  app.append(header, main, footer);
 
-        toggleBtn.textContent = '🌞';
-    } else {
-        toggleBtn.textContent = '🌙';
+  // Toggle Theme
+  const body = document.body;
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    body.classList.add('dark');
+    toggleTheme.textContent = '🌞';
+  } else {
+    toggleTheme.textContent = '🌙';
+  }
+
+  toggleTheme.addEventListener('click', () => {
+    const isDark = body.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    toggleTheme.textContent = isDark ? '🌞' : '🌙';
+  });
+
+  // Fetch default weather
+  fetchAndRenderWeather('Mar del Plata', main);
+
+  // Form submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const city = input.value.trim();
+    if (city) {
+      fetchAndRenderWeather(city, main);
     }
+  });
+}
 
-    toggleBtn.addEventListener('click', () => {
-        const isDark = body.classList.toggle('dark') && grid.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        toggleBtn.textContent = isDark ? '🌞' : '🌙';
-
-    });
-
+async function fetchAndRenderWeather(city, main) {
+  try {
+    const data = await getWeatherData(city);
+    const weatherElement = renderWeatherGrid(data);
+    const oldWeather = document.getElementById('weatherContainer');
+    if (oldWeather) oldWeather.remove();
+    main.append(weatherElement);
+  } catch (err) {
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'weatherContainer';
+    errorDiv.textContent = 'No se pudo cargar el clima.';
+    main.append(errorDiv);
+  }
 }
