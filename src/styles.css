@@ -147,6 +147,43 @@ main {
   color: var(--label);
 }
 
+#weatherForm {
+  display: flex;
+  max-width: 500px;
+  margin: 2rem auto;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+/* Input */
+#weatherForm input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+}
+
+/* Botón */
+#weatherForm button {
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+#weatherForm button:hover {
+  background: darken(var(--primary), 10%);
+}
+
 
 @media (max-width: 768px) {
   main {
@@ -154,5 +191,18 @@ main {
   }
   .weather-grid {
     grid-template-columns: 1fr;
+  }
+  #weatherForm {
+    flex-direction: column;
+  }
+
+  #weatherForm input,
+  #weatherForm button {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  #weatherForm button {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 }
